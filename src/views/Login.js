@@ -1,80 +1,22 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FacebookLoginButton } from "react-social-login-buttons";
 import { LoginSocialFacebook } from "reactjs-social-login";
+import LoginViewModel from "../viewModels/LoginViewModel";
 import "../styles/Login.css";
 
 const Login = ({ authenticate }) => {
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
-  const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState("");
   const navigate = useNavigate();
-
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  const handleTogglePassword = () => {
-    setShowPassword(!showPassword);
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const storedUsers = JSON.parse(localStorage.getItem("users")) || [];
-    const user = storedUsers.find(
-      (user) =>
-        user.email === formData.email || user.facebookId === formData.facebookId
-    );
-    if (!user || user.password !== formData.password) {
-      setError("Email ou senha inválidos");
-      return;
-    }
-    authenticate();
-    navigate("/");
-  };
-
-  const responseFacebook = (response) => {
-    const { email, name, id, birthday } = response;
-    let storedUsers = JSON.parse(localStorage.getItem("users")) || [];
-    let user = storedUsers.find(
-      (user) => user.email === email || user.facebookId === ""
-    );
-
-    if (user) {
-      if (user.facebookId === "") {
-        setError("Email já possui cadastro na aplicação.");
-      } else {
-        authenticate();
-        navigate("/");
-      }
-      return;
-    }
-
-    user = storedUsers.find((user) => user.facebookId === id);
-
-    if (!user) {
-      user = {
-        email: email,
-        name: name,
-        password: "",
-        birthDate: birthday
-          ? new Date(birthday).toISOString().split("T")[0]
-          : "",
-        facebookId: id,
-      };
-      storedUsers.push(user);
-      localStorage.setItem("users", JSON.stringify(storedUsers));
-    }
-
-    authenticate();
-    navigate("/");
-  };
+  const {
+    formData,
+    showPassword,
+    error,
+    handleChange,
+    handleTogglePassword,
+    handleSubmit,
+    responseFacebook,
+    setError,
+  } = LoginViewModel({ authenticate, navigate });
 
   return (
     <div className="login-container">
@@ -115,14 +57,8 @@ const Login = ({ authenticate }) => {
           <LoginSocialFacebook
             appId="1179493686395436"
             fields="name,email,birthday"
-            onResolve={(response) => {
-              console.log(response);
-              responseFacebook(response);
-            }}
-            onReject={(error) => {
-              console.log(error);
-              setError("Falha ao logar com o Facebook");
-            }}
+            onResolve={(response) => responseFacebook(response)}
+            onReject={(error) => setError("Falha ao logar com o Facebook")}
           >
             <FacebookLoginButton />
           </LoginSocialFacebook>

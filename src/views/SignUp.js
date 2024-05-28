@@ -1,45 +1,27 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../styles/SignUp.css";
+import SignUpViewModel from "../viewModels/SignUpViewModel";
 
 const SignUp = () => {
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-    name: "",
-    birthDate: "",
-    facebookId: "",
-  });
-
-  const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState("");
   const navigate = useNavigate();
-
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  const handleTogglePassword = () => {
-    setShowPassword(!showPassword);
-  };
+  const {
+    formData,
+    showPassword,
+    error,
+    handleChange,
+    handleTogglePassword,
+    registerUser,
+    setError,
+  } = SignUpViewModel();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const storedUsers = JSON.parse(localStorage.getItem("users")) || [];
-    const existingUser = storedUsers.find(
-      (user) => user.email === formData.email || user.facebookId === formData.id
-    );
-    if (existingUser) {
-      setError("Email já existe. Por favor use um email diferente.");
+    const result = registerUser(formData);
+    if (result.error) {
+      setError(result.error);
       return;
     }
-
-    const newUser = { ...formData };
-    storedUsers.push(newUser);
-    localStorage.setItem("users", JSON.stringify(storedUsers));
     navigate("/login");
   };
 
@@ -52,7 +34,7 @@ const SignUp = () => {
           <input
             type="email"
             name="email"
-            value={formData.email}
+            value={formData?.email || ""}
             onChange={handleChange}
             required
           />
@@ -63,7 +45,7 @@ const SignUp = () => {
             <input
               type={showPassword ? "text" : "password"}
               name="password"
-              value={formData.password}
+              value={formData?.password || ""}
               onChange={handleChange}
               required
               pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$"
@@ -85,7 +67,7 @@ const SignUp = () => {
           <input
             type="text"
             name="name"
-            value={formData.name}
+            value={formData?.name || ""}
             onChange={handleChange}
             required
           />
@@ -95,7 +77,7 @@ const SignUp = () => {
           <input
             type="date"
             name="birthDate"
-            value={formData.birthDate}
+            value={formData?.birthDate || ""}
             onChange={handleChange}
             required
           />
