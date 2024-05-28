@@ -1,13 +1,23 @@
 import React, { useState } from "react";
 import { observer } from "mobx-react-lite";
 import MovieViewModel from "../viewmodels/MovieViewModel";
+import MovieModal from "../components/MovieModal";
 import "../styles/Home.css";
 
 const Home = observer(() => {
   const [query, setQuery] = useState("");
+  const [selectedMovie, setSelectedMovie] = useState(null);
 
   const handleSearch = async () => {
     await MovieViewModel.search(query);
+  };
+
+  const openModal = (movie) => {
+    setSelectedMovie(movie);
+  };
+
+  const closeModal = () => {
+    setSelectedMovie(null);
   };
 
   return (
@@ -34,9 +44,13 @@ const Home = observer(() => {
             />
             <h3>{movie.title}</h3>
             <p>{movie.overview}</p>
+            <button onClick={() => openModal(movie)}>Details</button>
           </div>
         ))}
       </div>
+      {selectedMovie && (
+        <MovieModal movie={selectedMovie} onClose={closeModal} />
+      )}
     </div>
   );
 });
