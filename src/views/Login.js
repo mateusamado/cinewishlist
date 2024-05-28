@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { FacebookLoginButton } from "react-social-login-buttons";
+import { LoginSocialFacebook } from "reactjs-social-login";
 import "../styles/Login.css";
 
 const Login = ({ authenticate }) => {
@@ -20,6 +22,12 @@ const Login = ({ authenticate }) => {
 
   const handleTogglePassword = () => {
     setShowPassword(!showPassword);
+  };
+
+  const responseFacebook = (response) => {
+    console.log(response);
+    authenticate();
+    navigate("/");
   };
 
   const handleSubmit = (e) => {
@@ -68,6 +76,19 @@ const Login = ({ authenticate }) => {
               </i>
             </button>
           </div>
+        </div>
+        <div>
+          <LoginSocialFacebook
+            appId="1179493686395436"
+            onResolve={(response) => {
+              console.log(response);
+            }}
+            onReject={(error) => {
+              console.log(error);
+            }}
+          >
+            <FacebookLoginButton />
+          </LoginSocialFacebook>
         </div>
         {error && <p className="error-message">{error}</p>}
         <button type="submit">Login</button>
