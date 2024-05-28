@@ -1,0 +1,44 @@
+.signup-container {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+input {
+  width: calc(100% - 40px);
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.password-input-container {
+  position: relative;
+}
+
+.password-toggle-button {
+  position: absolute;
+  right: 1%;
+  top: 34%;
+  transform: translateY(-50%);
+  width: 36px;
+  padding: 0;
+  background: lightblue;
+  border: none;
+  cursor: pointer;
+}
+
+.material-icons {
+  font-size: 24px;
+}

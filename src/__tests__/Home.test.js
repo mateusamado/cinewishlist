@@ -2,7 +2,7 @@ import React from "react";
 import { render, fireEvent, waitFor } from "@testing-library/react";
 import { BrowserRouter as Router } from "react-router-dom";
 import Home from "../views/Home";
-import MovieViewModel from "../viewmodels/MovieViewModel";
+import MovieViewModel from "../viewModels/MovieViewModel";
 import { searchMovies } from "../services/api";
 
 jest.mock("../services/api");

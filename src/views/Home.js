@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { observer } from "mobx-react-lite";
-import MovieViewModel from "../viewmodels/MovieViewModel";
+import MovieViewModel from "../viewModels/MovieViewModel";
 import MovieModal from "../components/MovieModal";
 import "../styles/Home.css";
 
