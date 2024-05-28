@@ -8,6 +8,7 @@ const SignUp = () => {
     password: "",
     name: "",
     birthDate: "",
+    facebookId: "",
   });
 
   const [showPassword, setShowPassword] = useState(false);
@@ -29,7 +30,7 @@ const SignUp = () => {
     e.preventDefault();
     const storedUsers = JSON.parse(localStorage.getItem("users")) || [];
     const existingUser = storedUsers.find(
-      (user) => user.email === formData.email
+      (user) => user.email === formData.email || user.facebookId === formData.id
     );
     if (existingUser) {
       setError("Email já existe. Por favor use um email diferente.");

@@ -24,20 +24,54 @@ const Login = ({ authenticate }) => {
     setShowPassword(!showPassword);
   };
 
-  const responseFacebook = (response) => {
-    console.log(response);
-    authenticate();
-    navigate("/");
-  };
-
   const handleSubmit = (e) => {
     e.preventDefault();
     const storedUsers = JSON.parse(localStorage.getItem("users")) || [];
-    const user = storedUsers.find((user) => user.email === formData.email);
+    const user = storedUsers.find(
+      (user) =>
+        user.email === formData.email || user.facebookId === formData.facebookId
+    );
     if (!user || user.password !== formData.password) {
       setError("Email ou senha inválidos");
       return;
     }
+    authenticate();
+    navigate("/");
+  };
+
+  const responseFacebook = (response) => {
+    const { email, name, id, birthday } = response;
+    let storedUsers = JSON.parse(localStorage.getItem("users")) || [];
+    let user = storedUsers.find(
+      (user) => user.email === email || user.facebookId === ""
+    );
+
+    if (user) {
+      if (user.facebookId === "") {
+        setError("Email já possui cadastro na aplicação.");
+      } else {
+        authenticate();
+        navigate("/");
+      }
+      return;
+    }
+
+    user = storedUsers.find((user) => user.facebookId === id);
+
+    if (!user) {
+      user = {
+        email: email,
+        name: name,
+        password: "",
+        birthDate: birthday
+          ? new Date(birthday).toISOString().split("T")[0]
+          : "",
+        facebookId: id,
+      };
+      storedUsers.push(user);
+      localStorage.setItem("users", JSON.stringify(storedUsers));
+    }
+
     authenticate();
     navigate("/");
   };
@@ -80,11 +114,14 @@ const Login = ({ authenticate }) => {
         <div>
           <LoginSocialFacebook
             appId="1179493686395436"
+            fields="name,email,birthday"
             onResolve={(response) => {
               console.log(response);
+              responseFacebook(response);
             }}
             onReject={(error) => {
               console.log(error);
+              setError("Falha ao logar com o Facebook");
             }}
           >
             <FacebookLoginButton />
