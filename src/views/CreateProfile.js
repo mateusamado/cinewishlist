@@ -22,7 +22,9 @@ function CreateProfile() {
   };
 
   const handleChange = (e) => {
-    setProfileName(e.target.value);
+    if (e.target.value.length <= 20) {
+      setProfileName(e.target.value);
+    }
   };
 
   return (
