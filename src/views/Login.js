@@ -7,6 +7,7 @@ const Login = ({ authenticate }) => {
     email: "",
     password: "",
   });
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
@@ -15,6 +16,10 @@ const Login = ({ authenticate }) => {
       ...formData,
       [e.target.name]: e.target.value,
     });
+  };
+
+  const handleTogglePassword = () => {
+    setShowPassword(!showPassword);
   };
 
   const handleSubmit = (e) => {
@@ -48,13 +53,24 @@ const Login = ({ authenticate }) => {
         </div>
         <div className="form-group">
           <label>Password:</label>
-          <input
-            type="password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            required
-          />
+          <div className="password-input-container">
+            <input
+              type={showPassword ? "text" : "password"}
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              required
+            />
+            <button
+              type="button"
+              className="password-toggle-button"
+              onClick={handleTogglePassword}
+            >
+              <i className={`material-icons ${showPassword ? "visible" : ""}`}>
+                {showPassword ? "visibility_off" : "visibility"}
+              </i>
+            </button>
+          </div>
         </div>
         {error && <p className="error-message">{error}</p>}
         <button type="submit">Login</button>
