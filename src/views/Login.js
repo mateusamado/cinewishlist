@@ -19,11 +19,11 @@ const Login = ({ authenticate }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Adicionar a lógica para autenticar o usuário
-    // Simulando por quanto uma autenticação simples apenas para demonstração
+    const storedUser = JSON.parse(localStorage.getItem("user"));
     if (
-      formData.email === "user@example.com" &&
-      formData.password === "password"
+      storedUser &&
+      formData.email === storedUser.email &&
+      formData.password === storedUser.password
     ) {
       authenticate();
       navigate("/");

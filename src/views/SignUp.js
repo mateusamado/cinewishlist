@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../styles/SignUp.css";
 
 const SignUp = () => {
@@ -10,6 +10,9 @@ const SignUp = () => {
     birthDate: "",
   });
 
+  const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
+
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -17,9 +20,22 @@ const SignUp = () => {
     });
   };
 
+  const handleTogglePassword = () => {
+    setShowPassword(!showPassword);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(formData);
+    const passwordRegex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    if (!passwordRegex.test(formData.password)) {
+      alert(
+        "A senha deve ter no mínimo 8 caracteres, incluindo letras maiúsculas, minúsculas, números e caracteres especiais."
+      );
+      return;
+    }
+    localStorage.setItem("user", JSON.stringify(formData));
+    navigate("/login");
   };
 
   return (
@@ -38,13 +54,26 @@ const SignUp = () => {
         </div>
         <div className="form-group">
           <label>Password:</label>
-          <input
-            type="password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            required
-          />
+          <div className="password-input-container">
+            <input
+              type={showPassword ? "text" : "password"}
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              required
+              pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$"
+              title="A senha deve ter no mínimo 8 caracteres, incluindo letras maiúsculas, minúsculas, números e caracteres especiais."
+            />
+            <button
+              type="button"
+              className="password-toggle-button"
+              onClick={handleTogglePassword}
+            >
+              <i className={`material-icons ${showPassword ? "visible" : ""}`}>
+                {showPassword ? "visibility_off" : "visibility"}
+              </i>
+            </button>
+          </div>
         </div>
         <div className="form-group">
           <label>Name:</label>
