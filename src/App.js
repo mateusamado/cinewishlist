@@ -1,19 +1,41 @@
-import React from "react";
-import { Routes, Route } from "react-router-dom";
+import React, { useState } from "react";
+import { Routes, Route, Navigate } from "react-router-dom";
 import Home from "./views/Home";
-// import Login from "./views/Login";
-// import Register from "./views/Register";
-// import Profile from "./views/Profile";
-// import Watchlist from "./views/Watchlist";
+import SignUp from "./views/SignUp";
+import Login from "./views/Login";
 
 function App() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  const authenticateUser = () => {
+    // Adicionar lógica para autenticar o usuário
+    // Por exemplo, verificando se há um token de autenticação válido
+    // Exemplo simples por enquanto
+    setIsAuthenticated(true);
+  };
+
+  const logoutUser = () => {
+    // Adicionar lógica para desautenticar o usuário
+    setIsAuthenticated(false);
+  };
+
   return (
     <Routes>
-      <Route exact path="/" element={<Home />} />
-      {/* <Route path="/login" element={<Login/>} />
-      <Route path="/register" element={<Register/>} />
-      <Route path="/profile" element={<Profile/>} />
-      <Route path="/watchlist" element={<Watchlist/>} /> */}
+      <Route
+        path="/"
+        element={
+          isAuthenticated ? (
+            <Home logout={logoutUser} />
+          ) : (
+            <Navigate to="/login" />
+          )
+        }
+      />
+      <Route path="/signup" element={<SignUp />} />
+      <Route
+        path="/login"
+        element={<Login authenticate={authenticateUser} />}
+      />
     </Routes>
   );
 }
