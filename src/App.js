@@ -10,10 +10,10 @@ function App() {
   return (
     <Routes>
       <Route exact path="/" element={<Home />} />
-      {/* <Route path="/login" element={Login} />
-      <Route path="/register" element={Register} />
-      <Route path="/profile" element={Profile} />
-      <Route path="/watchlist" element={Watchlist} /> */}
+      {/* <Route path="/login" element={<Login/>} />
+      <Route path="/register" element={<Register/>} />
+      <Route path="/profile" element={<Profile/>} />
+      <Route path="/watchlist" element={<Watchlist/>} /> */}
     </Routes>
   );
 }
