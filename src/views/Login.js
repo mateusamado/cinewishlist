@@ -24,17 +24,14 @@ const Login = ({ authenticate }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const storedUser = JSON.parse(localStorage.getItem("user"));
-    if (
-      storedUser &&
-      formData.email === storedUser.email &&
-      formData.password === storedUser.password
-    ) {
-      authenticate();
-      navigate("/");
-    } else {
-      setError("Invalid email or password");
+    const storedUsers = JSON.parse(localStorage.getItem("users")) || [];
+    const user = storedUsers.find((user) => user.email === formData.email);
+    if (!user || user.password !== formData.password) {
+      setError("Email ou senha inválidos");
+      return;
     }
+    authenticate();
+    navigate("/");
   };
 
   return (
@@ -52,7 +49,7 @@ const Login = ({ authenticate }) => {
           />
         </div>
         <div className="form-group">
-          <label>Password:</label>
+          <label>Senha:</label>
           <div className="password-input-container">
             <input
               type={showPassword ? "text" : "password"}
@@ -76,7 +73,7 @@ const Login = ({ authenticate }) => {
         <button type="submit">Login</button>
       </form>
       <p>
-        Don't have an account? <Link to="/signup">Sign up</Link>
+        Não tem uma conta? <Link to="/signup">Cadastre-se</Link>
       </p>
     </div>
   );

@@ -11,6 +11,7 @@ const SignUp = () => {
   });
 
   const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -26,21 +27,24 @@ const SignUp = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const passwordRegex =
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-    if (!passwordRegex.test(formData.password)) {
-      alert(
-        "A senha deve ter no mínimo 8 caracteres, incluindo letras maiúsculas, minúsculas, números e caracteres especiais."
-      );
+    const storedUsers = JSON.parse(localStorage.getItem("users")) || [];
+    const existingUser = storedUsers.find(
+      (user) => user.email === formData.email
+    );
+    if (existingUser) {
+      setError("Email já existe. Por favor use um email diferente.");
       return;
     }
-    localStorage.setItem("user", JSON.stringify(formData));
+
+    const newUser = { ...formData };
+    storedUsers.push(newUser);
+    localStorage.setItem("users", JSON.stringify(storedUsers));
     navigate("/login");
   };
 
   return (
     <div className="signup-container">
-      <h2>Create Account</h2>
+      <h2>Crie sua conta</h2>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label>Email:</label>
@@ -53,7 +57,7 @@ const SignUp = () => {
           />
         </div>
         <div className="form-group">
-          <label>Password:</label>
+          <label>Senha:</label>
           <div className="password-input-container">
             <input
               type={showPassword ? "text" : "password"}
@@ -76,7 +80,7 @@ const SignUp = () => {
           </div>
         </div>
         <div className="form-group">
-          <label>Name:</label>
+          <label>Nome:</label>
           <input
             type="text"
             name="name"
@@ -86,7 +90,7 @@ const SignUp = () => {
           />
         </div>
         <div className="form-group">
-          <label>Birth Date:</label>
+          <label>Data de nascimento:</label>
           <input
             type="date"
             name="birthDate"
@@ -95,10 +99,11 @@ const SignUp = () => {
             required
           />
         </div>
-        <button type="submit">Create Account</button>
+        {error && <p className="error-message">{error}</p>}
+        <button type="submit">Crie sua conta</button>
       </form>
       <p>
-        Already have an account? <Link to="/login">Log in</Link>
+        Já tem uma conta? <Link to="/login">Login</Link>
       </p>
     </div>
   );
