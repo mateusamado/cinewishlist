@@ -1,20 +1,20 @@
 import React from "react";
-import { Switch, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import Home from "./views/Home";
-import Login from "./views/Login";
-import Register from "./views/Register";
-import Profile from "./views/Profile";
-import Watchlist from "./views/Watchlist";
+// import Login from "./views/Login";
+// import Register from "./views/Register";
+// import Profile from "./views/Profile";
+// import Watchlist from "./views/Watchlist";
 
 function App() {
   return (
-    <Switch>
-      <Route exact path="/" component={Home} />
-      <Route path="/login" component={Login} />
-      <Route path="/register" component={Register} />
-      <Route path="/profile" component={Profile} />
-      <Route path="/watchlist" component={Watchlist} />
-    </Switch>
+    <Routes>
+      <Route exact path="/" element={<Home />} />
+      {/* <Route path="/login" element={Login} />
+      <Route path="/register" element={Register} />
+      <Route path="/profile" element={Profile} />
+      <Route path="/watchlist" element={Watchlist} /> */}
+    </Routes>
   );
 }
 
