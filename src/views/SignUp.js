@@ -30,22 +30,24 @@ const SignUp = () => {
       <h2>Crie sua conta</h2>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
-          <label>Email:</label>
+          <label htmlFor="email">Email:</label>
           <input
+            id="email"
             type="email"
             name="email"
-            value={formData?.email || ""}
+            defaultValue=""
             onChange={handleChange}
             required
           />
         </div>
         <div className="form-group">
-          <label>Senha:</label>
+          <label htmlFor="password">Senha:</label>
           <div className="password-input-container">
             <input
+              id="password"
               type={showPassword ? "text" : "password"}
               name="password"
-              value={formData?.password || ""}
+              defaultValue=""
               onChange={handleChange}
               required
               pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$"
@@ -63,21 +65,23 @@ const SignUp = () => {
           </div>
         </div>
         <div className="form-group">
-          <label>Nome:</label>
+          <label htmlFor="name">Nome:</label>
           <input
+            id="name"
             type="text"
             name="name"
-            value={formData?.name || ""}
+            defaultValue=""
             onChange={handleChange}
             required
           />
         </div>
         <div className="form-group">
-          <label>Data de nascimento:</label>
+          <label htmlFor="birthDate">Data de nascimento:</label>
           <input
+            id="birthDate"
             type="date"
             name="birthDate"
-            value={formData?.birthDate || ""}
+            defaultValue=""
             onChange={handleChange}
             required
           />
