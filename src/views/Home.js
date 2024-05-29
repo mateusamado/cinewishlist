@@ -10,8 +10,10 @@ const Home = observer(() => {
   const [toWatchList, setToWatchList] = useState([]);
 
   useEffect(() => {
-    setToWatchList(MovieViewModel.getToWatchList());
-  }, []);
+    const selectedProfileId = localStorage.getItem("selectedProfileId");
+    const toWatchList = MovieViewModel.getToWatchList(selectedProfileId);
+    setToWatchList(toWatchList);
+  }, [toWatchList]);
 
   const handleSearch = async () => {
     await MovieViewModel.search(query);
@@ -26,8 +28,8 @@ const Home = observer(() => {
   };
 
   const addToWatchList = (movieId) => {
-    MovieViewModel.markAsToWatch(movieId);
-    setToWatchList([...MovieViewModel.getToWatchList()]);
+    const selectedProfileId = localStorage.getItem("selectedProfileId");
+    MovieViewModel.markAsToWatch(movieId, selectedProfileId);
   };
 
   return (

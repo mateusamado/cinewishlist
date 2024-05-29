@@ -4,11 +4,11 @@ import { searchMovies, getMovieDetails } from "../services/api";
 class MovieViewModel {
   movies = [];
   selectedMovie = null;
-  toWatchList = [];
+  profiles = {};
 
   constructor() {
     makeAutoObservable(this);
-    this.loadToWatchList();
+    this.loadFromLocalStorage();
   }
 
   async search(query) {
@@ -21,24 +21,30 @@ class MovieViewModel {
     this.selectedMovie = response.data;
   }
 
-  markAsToWatch(movieId) {
+  markAsToWatch(movieId, profileId) {
     const movie = this.movies.find((m) => m.id === movieId);
-    if (movie && !this.toWatchList.includes(movie)) {
-      this.toWatchList.push(movie);
+    if (!this.profiles[profileId]) {
+      this.profiles[profileId] = [];
+    }
+    if (movie && !this.profiles[profileId].includes(movie)) {
+      this.profiles[profileId].push(movie);
+      this.saveToLocalStorage();
     }
   }
 
-  loadToWatchList() {
-    const toWatchList = JSON.parse(localStorage.getItem("toWatchList")) || [];
-    this.toWatchList = toWatchList;
+  getToWatchList(profileId) {
+    return this.profiles[profileId] || [];
   }
 
-  saveToWatchList() {
-    localStorage.setItem("toWatchList", JSON.stringify(this.toWatchList));
+  saveToLocalStorage() {
+    localStorage.setItem("movieViewModel", JSON.stringify(this.profiles));
   }
 
-  getToWatchList() {
-    return this.toWatchList;
+  loadFromLocalStorage() {
+    const data = localStorage.getItem("movieViewModel");
+    if (data) {
+      this.profiles = JSON.parse(data);
+    }
   }
 }
 
