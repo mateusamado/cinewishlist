@@ -57,7 +57,7 @@ const Login = ({ authenticate }) => {
           <LoginSocialFacebook
             appId="1179493686395436"
             fields="name,email,birthday"
-            onResolve={(response) => responseFacebook(response)}
+            onResolve={responseFacebook}
             onReject={(error) => setError("Falha ao logar com o Facebook")}
           >
             <FacebookLoginButton />
