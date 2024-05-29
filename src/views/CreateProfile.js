@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 function CreateProfile() {
   const [profileName, setProfileName] = useState("");
-  const history = useNavigate();
+  const navigate = useNavigate();
 
   const handleCreateProfile = () => {
     const newProfile = {
@@ -18,7 +18,7 @@ function CreateProfile() {
 
     localStorage.setItem("profiles", JSON.stringify(updatedProfiles));
 
-    history("/profiles");
+    navigate("/profiles");
   };
 
   const handleChange = (e) => {
@@ -30,14 +30,17 @@ function CreateProfile() {
   return (
     <div>
       <h2>Criar Perfil</h2>
-      <label>Nome do Perfil:</label>
+      <label htmlFor="profileName">Nome do Perfil:</label>
       <input
         type="text"
+        id="profileName"
         value={profileName}
         onChange={handleChange}
         placeholder="Digite o nome do perfil"
       />
-      <button onClick={handleCreateProfile}>Criar Perfil</button>
+      <button onClick={handleCreateProfile} data-testid="create-profile-button">
+        Criar Perfil
+      </button>
     </div>
   );
 }
