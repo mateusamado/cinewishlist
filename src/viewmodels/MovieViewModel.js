@@ -48,4 +48,5 @@ class MovieViewModel {
   }
 }
 
-export default new MovieViewModel();
+const movieViewModel = new MovieViewModel();
+export default movieViewModel;
