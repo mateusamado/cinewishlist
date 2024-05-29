@@ -34,7 +34,7 @@ const Home = observer(() => {
 
   return (
     <div className="home-container">
-      <h1>Movie List</h1>
+      <h1>CineWishlist</h1>
       <h2>To Watch List</h2>
       <div className="movies-container">
         {toWatchList.map((movie) => (
