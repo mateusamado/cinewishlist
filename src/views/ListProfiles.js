@@ -10,6 +10,10 @@ function ListProfiles() {
     setProfiles(cachedProfiles);
   }, []);
 
+  const selectProfile = (profileId) => {
+    localStorage.setItem("selectedProfileId", profileId);
+  };
+
   return (
     <div>
       <h2>Meus Perfis</h2>
@@ -18,7 +22,12 @@ function ListProfiles() {
       ) : (
         <div className="profiles-container">
           {profiles.map((profile) => (
-            <Link key={profile.id} to="/home" className="profile-link">
+            <Link
+              key={profile.id}
+              to="/home"
+              className="profile-link"
+              onClick={() => selectProfile(profile.id)}
+            >
               <div className="profile-card">
                 <h3>{profile.name}</h3>
                 <img
