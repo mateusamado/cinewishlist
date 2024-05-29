@@ -1,0 +1,26 @@
+.profiles-container {
+  display: flex;
+  overflow-x: auto;
+}
+
+.profile-link {
+  flex: 0 0 auto;
+  margin-right: 35px;
+  text-decoration: none;
+  color: inherit;
+}
+
+.profile-card {
+  text-align: center;
+}
+
+.profile-card h3 {
+  margin-bottom: 5px;
+}
+
+.profile-card img {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 10%;
+}
